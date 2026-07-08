@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "node10",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "types": ["node"],
+    "ignoreDeprecations": "5.0"
+  },
+  "exclude": ["node_modules", "dist"]
+}
