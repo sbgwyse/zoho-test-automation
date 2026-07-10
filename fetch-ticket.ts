@@ -234,10 +234,20 @@ export async function replyToTicket(
       }
     );
 
-    const uploadData: any = await uploadRes.json();
+    const uploadText = await uploadRes.text();
+    let uploadData: any = {};
+
+    try {
+      uploadData = uploadText ? JSON.parse(uploadText) : {};
+    } catch {
+      uploadData = { raw: uploadText };
+    }
 
     if (!uploadRes.ok || !uploadData.id) {
-      console.error('Attachment upload failed:', uploadData);
+      console.error(
+        `Attachment upload failed for ${att.name} (status ${uploadRes.status}):`,
+        uploadData
+      );
       continue;
     }
 
@@ -257,15 +267,22 @@ export async function replyToTicket(
         channel: 'EMAIL',
         contentType: 'html',
         content,
-        attachments: attachmentIds,
+        attachmentIds: attachmentIds,
       }),
     }
   );
 
-  const replyData: any = await replyRes.json();
+  const replyText = await replyRes.text();
+  let replyData: any = {};
+
+  try {
+    replyData = replyText ? JSON.parse(replyText) : {};
+  } catch {
+    replyData = { raw: replyText };
+  }
 
   if (!replyRes.ok) {
-    console.error('Ticket reply failed:', replyData);
+    console.error(`Ticket reply failed (status ${replyRes.status}):`, replyData);
     throw new Error('Failed to reply to ticket');
   }
 
